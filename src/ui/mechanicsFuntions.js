@@ -12,6 +12,18 @@ export const randomizeBombs = (fieldsNumber, bombPercentage) => {
   return bombs;
 };
 
+const changeFieldValue = (board, IValue, JValue) => {
+  if (
+    IValue + 1 < board.length &&
+    IValue - 1 >= 0 &&
+    JValue + 1 < board.length &&
+    JValue - 1 >= 0 &&
+    board[IValue][JValue] !== 'x'
+  )
+    ++board[IValue][JValue];
+  return board;
+};
+
 export const getUncoveredBoard = (bombs, fieldsNumber) => {
   let board = Array.from(Array(fieldsNumber), (_) => []).map((_) =>
     Array.from(Array(fieldsNumber), (_) => 1)
@@ -22,42 +34,14 @@ export const getUncoveredBoard = (bombs, fieldsNumber) => {
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
       if (board[i][j] === 'x') {
-        if (j + 1 < board.length && board[i][j + 1] && board[i][j + 1] !== 'x')
-          board[i][j + 1]++;
-        if (
-          i + 1 < board.length &&
-          j + 1 < board.length &&
-          board[i + 1][j + 1] &&
-          board[i + 1][j + 1] !== 'x'
-        )
-          board[i + 1][j + 1]++;
-        if (
-          i - 1 >= 0 &&
-          j + 1 < board.length &&
-          board[i - 1][j + 1] &&
-          board[i - 1][j + 1] !== 'x'
-        )
-          board[i - 1][j + 1]++;
-        if (j - 1 >= 0 && board[i][j - 1] && board[i][j - 1] !== 'x')
-          board[i][j - 1]++;
-        if (
-          j - 1 >= 0 &&
-          i + 1 < board.length &&
-          board[i + 1][j - 1] &&
-          board[i + 1][j - 1] !== 'x'
-        )
-          board[i + 1][j - 1]++;
-        if (
-          j - 1 >= 0 &&
-          i - 1 >= 0 &&
-          board[i - 1][j - 1] &&
-          board[i - 1][j - 1] !== 'x'
-        )
-          board[i - 1][j - 1]++;
-        if (i + 1 < board.length && board[i + 1][j] && board[i + 1][j] !== 'x')
-          board[i + 1][j]++;
-        if (i - 1 >= 0 && board[i - 1][j] && board[i - 1][j] !== 'x')
-          board[i - 1][j]++;
+        board = changeFieldValue(board, i, j + 1);
+        board = changeFieldValue(board, i + 1, j + 1);
+        board = changeFieldValue(board, i - 1, j + 1);
+        board = changeFieldValue(board, i, j - 1);
+        board = changeFieldValue(board, i + 1, j - 1);
+        board = changeFieldValue(board, i - 1, j - 1);
+        board = changeFieldValue(board, i + 1, j);
+        board = changeFieldValue(board, i - 1, j);
       }
     }
   }
