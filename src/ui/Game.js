@@ -1,9 +1,10 @@
 import { Container, Box } from '@mui/material';
 import SquareIcon from '@mui/icons-material/Square';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OptionButtons from './OptionButtons';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { randomizeBombs, getUncoveredBoard } from './mechanicsFuntions';
 
 function Game() {
   const getBoard = (fieldsNumber) => {
@@ -22,7 +23,18 @@ function Game() {
   const [board, setBoard] = useState({
     board: getBoard(8),
     option: 'Empty field',
+    bombs: randomizeBombs(8, 0.3),
+    uncoveredBoard: [],
   });
+
+  useEffect(() => {
+    setBoard((currentBoard) => {
+      return {
+        ...currentBoard,
+        uncoveredBoard: getUncoveredBoard(currentBoard.bombs, 8),
+      };
+    });
+  }, [board.bombs]);
 
   const makeMove = (indexes) => {
     setBoard((currentBoard) => {
@@ -58,6 +70,7 @@ function Game() {
 
   return (
     <Container sx={{ display: 'flex', marginTop: '50px' }}>
+      {console.log(board)}
       <OptionButtons setBoard={setBoard} board={board} />
       <Box sx={{ width: '600px' }}>
         {board.board.map((el, index) => (
