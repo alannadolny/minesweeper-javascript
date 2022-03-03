@@ -4,7 +4,13 @@ import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import { useEffect, useState } from 'react';
 import OptionButtons from './OptionButtons';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import { randomizeBombs, getUncoveredBoard } from './mechanicsFuntions';
+import {
+  randomizeBombs,
+  getUncoveredBoard,
+  returnFieldValue,
+  checkFieldIndex,
+} from './mechanicsFuntions';
+import * as _ from 'lodash';
 
 function Game() {
   const getBoard = (fieldsNumber) => {
@@ -14,7 +20,12 @@ function Game() {
           key={[firstIndex, secondIndex]}
           fontSize='large'
           color='primary'
-          onClick={(event) => makeMove([firstIndex, secondIndex])}
+          onClick={() =>
+            uncoverEmptyFields(
+              [firstIndex, secondIndex],
+              getUncoveredBoard(board.bombs, 8)
+            )
+          }
         />
       ));
     });
@@ -23,7 +34,7 @@ function Game() {
   const [board, setBoard] = useState({
     board: getBoard(8),
     option: 'Empty field',
-    bombs: randomizeBombs(8, 0.3),
+    bombs: randomizeBombs(8, 0.1),
     uncoveredBoard: [],
   });
 
@@ -52,7 +63,7 @@ function Game() {
                       key={[index, fieldIndex]}
                     />
                   );
-                else
+                if (currentBoard.option === 'Question mark')
                   return (
                     <QuestionMarkIcon
                       fontSize='large'
@@ -60,6 +71,8 @@ function Game() {
                       key={[index, fieldIndex]}
                     />
                   );
+                else
+                  return returnFieldValue(currentBoard.uncoveredBoard, indexes);
               } else return field;
             });
           else return row;
@@ -68,9 +81,41 @@ function Game() {
     });
   };
 
+  const uncoverEmptyFields = (fieldNumbers, uncoveredBoard) => {
+    const [i, j] = fieldNumbers;
+    const length = uncoveredBoard.length;
+    if (uncoveredBoard[i][j] === 'f') return;
+    makeMove(fieldNumbers);
+    const newUncoveredBoard = uncoveredBoard.map((el, index) => {
+      if (index === i)
+        return el.map((el2, index2) => {
+          if (index2 === j) return 'f';
+          else return el2;
+        });
+      else return el;
+    });
+    if (uncoveredBoard[i][j] === 0) {
+      if (checkFieldIndex(i + 1, j, length))
+        uncoverEmptyFields([i + 1, j], newUncoveredBoard);
+      if (checkFieldIndex(i - 1, j, length))
+        uncoverEmptyFields([i - 1, j], newUncoveredBoard);
+      if (checkFieldIndex(i, j + 1, length))
+        uncoverEmptyFields([i, j + 1], newUncoveredBoard);
+      if (checkFieldIndex(i, j - 1, length))
+        uncoverEmptyFields([i, j - 1], newUncoveredBoard);
+      if (checkFieldIndex(i + 1, j + 1, length))
+        uncoverEmptyFields([i + 1, j + 1], newUncoveredBoard);
+      if (checkFieldIndex(i - 1, j - 1, length))
+        uncoverEmptyFields([i - 1, j - 1], newUncoveredBoard);
+      if (checkFieldIndex(i + 1, j - 1, length))
+        uncoverEmptyFields([i + 1, j - 1], newUncoveredBoard);
+      if (checkFieldIndex(i - 1, j + 1, length))
+        uncoverEmptyFields([i - 1, j + 1], newUncoveredBoard);
+    }
+  };
+
   return (
     <Container sx={{ display: 'flex', marginTop: '50px' }}>
-      {console.log(board)}
       <OptionButtons setBoard={setBoard} board={board} />
       <Box sx={{ width: '600px' }}>
         {board.board.map((el, index) => (
