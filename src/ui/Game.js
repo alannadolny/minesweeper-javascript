@@ -11,6 +11,8 @@ import {
   checkFieldIndex,
 } from './mechanicsFuntions';
 import * as _ from 'lodash';
+import BombCounter from './BombCounter';
+import GameResult from './GameResult';
 
 function Game() {
   const getBoard = (fieldsNumber) => {
@@ -20,12 +22,12 @@ function Game() {
           key={[firstIndex, secondIndex]}
           fontSize='large'
           color='primary'
-          onClick={() =>
+          onClick={() => {
             uncoverEmptyFields(
               [firstIndex, secondIndex],
               getUncoveredBoard(board.bombs, 8)
-            )
-          }
+            );
+          }}
         />
       ));
     });
@@ -34,9 +36,12 @@ function Game() {
   const [board, setBoard] = useState({
     board: getBoard(8),
     option: 'Empty field',
-    bombs: randomizeBombs(8, 0.1),
+    bombs: randomizeBombs(8, 0.12),
     uncoveredBoard: [],
   });
+
+  const [win, setWin] = useState(null);
+  const [foundBombs, setFoundBombs] = useState(0);
 
   useEffect(() => {
     setBoard((currentBoard) => {
@@ -49,6 +54,16 @@ function Game() {
 
   const makeMove = (indexes) => {
     setBoard((currentBoard) => {
+      if (
+        currentBoard.option === 'Empty field' &&
+        currentBoard.uncoveredBoard[indexes[0]][indexes[1]] === 'x'
+      )
+        setWin(false);
+      if (
+        currentBoard.option === 'Bomb' &&
+        currentBoard.uncoveredBoard[indexes[0]][indexes[1]] === 'x'
+      )
+        setFoundBombs((bombs) => bombs + 1);
       return {
         ...currentBoard,
         board: currentBoard.board.map((row, index) => {
@@ -61,6 +76,12 @@ function Game() {
                       fontSize='large'
                       color='primary'
                       key={[index, fieldIndex]}
+                      onClick={() =>
+                        uncoverEmptyFields(
+                          indexes,
+                          getUncoveredBoard(board.bombs, 8)
+                        )
+                      }
                     />
                   );
                 if (currentBoard.option === 'Question mark')
@@ -69,6 +90,12 @@ function Game() {
                       fontSize='large'
                       color='primary'
                       key={[index, fieldIndex]}
+                      onClick={() =>
+                        uncoverEmptyFields(
+                          indexes,
+                          getUncoveredBoard(board.bombs, 8)
+                        )
+                      }
                     />
                   );
                 else
@@ -112,15 +139,24 @@ function Game() {
       if (checkFieldIndex(i - 1, j + 1, length))
         uncoverEmptyFields([i - 1, j + 1], newUncoveredBoard);
     }
+    return;
   };
 
   return (
     <Container sx={{ display: 'flex', marginTop: '50px' }}>
-      <OptionButtons setBoard={setBoard} board={board} />
+      <Box>
+        <OptionButtons setBoard={setBoard} board={board} />
+        {win !== null ? <GameResult result={win} /> : ''}
+      </Box>
       <Box sx={{ width: '600px' }}>
         {board.board.map((el, index) => (
           <div key={index}> {el} </div>
         ))}
+        <BombCounter
+          board={board.uncoveredBoard}
+          foundBombs={foundBombs}
+          setWin={setWin}
+        />
       </Box>
     </Container>
   );
