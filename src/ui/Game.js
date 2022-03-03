@@ -86,13 +86,13 @@ function Game() {
     const length = uncoveredBoard.length;
     if (uncoveredBoard[i][j] === 'f') return;
     makeMove(fieldNumbers);
-    const newUncoveredBoard = uncoveredBoard.map((el, index) => {
-      if (index === i)
-        return el.map((el2, index2) => {
-          if (index2 === j) return 'f';
-          else return el2;
+    const newUncoveredBoard = uncoveredBoard.map((row, firstIndex) => {
+      if (firstIndex === i)
+        return row.map((field, secondIndex) => {
+          if (secondIndex === j) return 'f';
+          else return field;
         });
-      else return el;
+      else return row;
     });
     if (uncoveredBoard[i][j] === 0) {
       if (checkFieldIndex(i + 1, j, length))
