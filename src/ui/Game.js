@@ -14,7 +14,7 @@ import * as _ from 'lodash';
 import BombCounter from './BombCounter';
 import GameResult from './GameResult';
 
-function Game() {
+function Game({ difficultyLevel }) {
   const getBoard = (fieldsNumber) => {
     return Array.from(Array(fieldsNumber), (_) => []).map((_, firstIndex) => {
       return Array.from(Array(fieldsNumber), (_, secondIndex) => (

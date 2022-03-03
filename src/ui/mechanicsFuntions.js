@@ -105,7 +105,7 @@ export const returnFieldValue = (board, fieldNumber) => {
           color='primary'
         />
       );
-    else
+    if (board[fieldNumber[0]][fieldNumber[1]] === 6)
       return (
         <Looks6IconOutlined
           key={fieldNumber}
@@ -113,6 +113,7 @@ export const returnFieldValue = (board, fieldNumber) => {
           color='primary'
         />
       );
+    else return board[fieldNumber[0]][fieldNumber[1]];
   }
 };
 
