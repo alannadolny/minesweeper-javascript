@@ -22,7 +22,7 @@ function BombCounter({ board, foundBombs, setWin }) {
     <Chip
       sx={{ marginTop: '20px' }}
       color='primary'
-      label={`Bombs counter: ${getBombsQuantity(board)}`}
+      label={`Bombs to find: ${getBombsQuantity(board)}`}
     />
   );
 }

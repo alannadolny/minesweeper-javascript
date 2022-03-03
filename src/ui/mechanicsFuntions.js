@@ -1,4 +1,4 @@
-import CircleIcon from '@mui/icons-material/Circle';
+import { BiBomb } from 'react-icons/bi';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import LooksOneIconOutlined from '@mui/icons-material/LooksOneOutlined';
 import LooksTwoIconOutlined from '@mui/icons-material/LooksTwoOutlined';
@@ -59,7 +59,12 @@ export const getUncoveredBoard = (bombs, fieldsNumber) => {
 
 export const returnFieldValue = (board, fieldNumber) => {
   if (board[fieldNumber[0]][fieldNumber[1]] === 'x')
-    return <CircleIcon key={fieldNumber} fontSize='large' color='error' />;
+    return (
+      <BiBomb
+        key={fieldNumber}
+        style={{ height: '35px', width: '35px', color: 'red' }}
+      />
+    );
   else if (board[fieldNumber[0]][fieldNumber[1]] === 0)
     return (
       <CropSquareIcon key={fieldNumber} fontSize='large' color='primary' />

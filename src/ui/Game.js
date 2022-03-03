@@ -1,4 +1,4 @@
-import { Container, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import SquareIcon from '@mui/icons-material/Square';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import { useEffect, useState } from 'react';
@@ -13,6 +13,11 @@ import {
 import * as _ from 'lodash';
 import BombCounter from './BombCounter';
 import GameResult from './GameResult';
+import { BsEmojiSmile } from 'react-icons/bs';
+import { FaSkullCrossbones } from 'react-icons/fa';
+import { HiOutlineEmojiSad } from 'react-icons/hi';
+import useWindowSize from 'react-use/lib/useWindowSize';
+import Confetti from 'react-confetti';
 
 function Game({ difficultyLevel }) {
   const getBoard = (fieldsNumber) => {
@@ -25,7 +30,7 @@ function Game({ difficultyLevel }) {
           onClick={() => {
             uncoverEmptyFields(
               [firstIndex, secondIndex],
-              getUncoveredBoard(board.bombs, 8)
+              getUncoveredBoard(board.bombs, difficultyLevel.fields)
             );
           }}
         />
@@ -34,20 +39,24 @@ function Game({ difficultyLevel }) {
   };
 
   const [board, setBoard] = useState({
-    board: getBoard(8),
+    board: getBoard(difficultyLevel.fields),
     option: 'Empty field',
-    bombs: randomizeBombs(8, 0.12),
+    bombs: randomizeBombs(difficultyLevel.fields, difficultyLevel.bombs),
     uncoveredBoard: [],
   });
 
   const [win, setWin] = useState(null);
   const [foundBombs, setFoundBombs] = useState(0);
+  const { width, height } = useWindowSize();
 
   useEffect(() => {
     setBoard((currentBoard) => {
       return {
         ...currentBoard,
-        uncoveredBoard: getUncoveredBoard(currentBoard.bombs, 8),
+        uncoveredBoard: getUncoveredBoard(
+          currentBoard.bombs,
+          difficultyLevel.fields
+        ),
       };
     });
   }, [board.bombs]);
@@ -79,7 +88,7 @@ function Game({ difficultyLevel }) {
                       onClick={() =>
                         uncoverEmptyFields(
                           indexes,
-                          getUncoveredBoard(board.bombs, 8)
+                          getUncoveredBoard(board.bombs, difficultyLevel.fields)
                         )
                       }
                     />
@@ -93,7 +102,7 @@ function Game({ difficultyLevel }) {
                       onClick={() =>
                         uncoverEmptyFields(
                           indexes,
-                          getUncoveredBoard(board.bombs, 8)
+                          getUncoveredBoard(board.bombs, difficultyLevel.fields)
                         )
                       }
                     />
@@ -143,22 +152,50 @@ function Game({ difficultyLevel }) {
   };
 
   return (
-    <Container sx={{ display: 'flex', marginTop: '50px' }}>
+    <div
+      style={{ display: 'flex', marginTop: '50px', justifyContent: 'center' }}
+    >
       <Box>
         <OptionButtons setBoard={setBoard} board={board} />
         {win !== null ? <GameResult result={win} /> : ''}
       </Box>
-      <Box sx={{ width: '600px' }}>
-        {board.board.map((el, index) => (
-          <div key={index}> {el} </div>
-        ))}
+      <Box
+        sx={{
+          maxWidth: '100%',
+          marginLeft: '10px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {win === null ? (
+          board.board.map((el, index) => <div key={index}> {el} </div>)
+        ) : win === true ? (
+          <div>
+            <Confetti width={width} height={height} />
+            <BsEmojiSmile
+              style={{
+                width: '300px',
+                height: '300px',
+                color: 'rgb(25, 118, 210)',
+              }}
+            />
+          </div>
+        ) : (
+          <HiOutlineEmojiSad
+            style={{
+              width: '300px',
+              height: '300px',
+              color: 'rgb(25, 118, 210)',
+            }}
+          />
+        )}
         <BombCounter
           board={board.uncoveredBoard}
           foundBombs={foundBombs}
           setWin={setWin}
         />
       </Box>
-    </Container>
+    </div>
   );
 }
 

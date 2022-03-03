@@ -9,7 +9,12 @@ function OptionButtons({ setBoard, board }) {
 
   return (
     <Container
-      sx={{ display: 'flex', flexDirection: 'column', width: '400px' }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '400px',
+        marginRight: '20px',
+      }}
     >
       {['Empty field', 'Bomb', 'Question mark'].map((btn) => {
         return (
