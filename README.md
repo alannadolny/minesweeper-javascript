@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# MINESWEEPER
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## SPIS TREŚCI
 
-## Available Scripts
+- [URUCHOMIENIE PROJEKTU](#uruchomienie-projektu)
+- [UŻYTE TECHNOLOGIE / BIBLIOTEKI](#użyte-technologie-/-biblioteki)
+- [FUNKCJONALNOŚCI](#funkcjonalności)
+- [STATUS PROJEKTU](#status-projektu)
+- [ZRZUTY EKRANU](#zrzuty-ekranu)
 
-In the project directory, you can run:
+## URUCHOMIENIE PROJEKTU
 
-### `yarn start`
+Aby uruchomić projekt należy wejść w folder projektu i wpisać poniższe polecenie, w celu zainstalowania zależności
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+yarn install
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+lub
 
-### `yarn test`
+```
+npm i
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Po zainstalowaniu zależności wystarczy już wpisać
 
-### `yarn build`
+```
+yarn start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+lub
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## UŻYTE TECHNOLOGIE / BLIBLOTEKI
 
-### `yarn eject`
+- lodash
+- radium
+- react (17.0.2)
+- react-animations
+- react-confetti
+- react-icons
+- react-router-dom
+- react-use
+- material UI
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## FUNKCJONALNOŚCI
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Użytkownik ma do wyboru 3 plansze, każda o innym poziomie trudności
+- Użytkownik może oznaczyć pole pod którym znajduje się bomba znacznikiem flagi
+- Użytkownik może zaznaczyć pole nad którym się zastanawia znakiem zapytania
+- Użytkownik może odsłaniać pola, jeśli kliknie puste pole, które sąsiaduje z innym pustym to plansza odsłoni się rekurencyjnie
+- Na polach znajdują się cyfry, które pokazują ile bomb znajduje się na sąsiednich polach
+- Jeśli użytkownik prawidłowo oznaczy wszystkie bomby wygrywa, natomiast jeśli odsłoni bombę przegrywa
+- W momencie wygrania pojawia się animacja konfetti
+- Plansza pojawia się używając animacji
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## STATUS PROJEKTU
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Projekt został zakończony (04.03.2022)
 
-## Learn More
+## ZRZUTY EKRANU
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<img src="./img/Zrzut ekranu 2022-03-04 022916.png"/>
+<img src="./img/menu.gif"/>
+<img src="./img/lose.gif"/>
+<img src="./img/win.gif"/>
