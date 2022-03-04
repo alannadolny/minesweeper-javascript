@@ -14,12 +14,20 @@ import * as _ from 'lodash';
 import BombCounter from './BombCounter';
 import GameResult from './GameResult';
 import { BsEmojiSmile } from 'react-icons/bs';
-import { FaSkullCrossbones } from 'react-icons/fa';
 import { HiOutlineEmojiSad } from 'react-icons/hi';
 import useWindowSize from 'react-use/lib/useWindowSize';
 import Confetti from 'react-confetti';
+import { fadeIn } from 'react-animations';
+import Radium, { StyleRoot } from 'radium';
 
 function Game({ difficultyLevel }) {
+  const styles = {
+    fadeIn: {
+      animation: 'x 2s',
+      animationName: Radium.keyframes(fadeIn, 'fadeIn'),
+    },
+  };
+
   const getBoard = (fieldsNumber) => {
     return Array.from(Array(fieldsNumber), (_) => []).map((_, firstIndex) => {
       return Array.from(Array(fieldsNumber), (_, secondIndex) => (
@@ -152,50 +160,61 @@ function Game({ difficultyLevel }) {
   };
 
   return (
-    <div
-      style={{ display: 'flex', marginTop: '50px', justifyContent: 'center' }}
-    >
-      <Box>
-        <OptionButtons setBoard={setBoard} board={board} />
-        {win !== null ? <GameResult result={win} /> : ''}
-      </Box>
-      <Box
-        sx={{
-          maxWidth: '100%',
-          marginLeft: '10px',
+    <StyleRoot>
+      <div
+        style={{
           display: 'flex',
-          flexDirection: 'column',
+          marginTop: '50px',
+          justifyContent: 'center',
         }}
       >
-        {win === null ? (
-          board.board.map((el, index) => <div key={index}> {el} </div>)
-        ) : win === true ? (
-          <div>
-            <Confetti width={width} height={height} />
-            <BsEmojiSmile
+        <Box>
+          <OptionButtons setBoard={setBoard} board={board} />
+          {win !== null ? <GameResult result={win} /> : ''}
+        </Box>
+        <Box
+          sx={{
+            maxWidth: '100%',
+            marginLeft: '10px',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {win === null ? (
+            board.board.map((el, index) => (
+              <div key={index} style={styles.fadeIn}>
+                {' '}
+                {el}{' '}
+              </div>
+            ))
+          ) : win === true ? (
+            <div>
+              <Confetti width={width} height={height} />
+              <BsEmojiSmile
+                style={{
+                  width: '300px',
+                  height: '300px',
+                  color: 'rgb(25, 118, 210)',
+                }}
+              />
+            </div>
+          ) : (
+            <HiOutlineEmojiSad
               style={{
                 width: '300px',
                 height: '300px',
                 color: 'rgb(25, 118, 210)',
               }}
             />
-          </div>
-        ) : (
-          <HiOutlineEmojiSad
-            style={{
-              width: '300px',
-              height: '300px',
-              color: 'rgb(25, 118, 210)',
-            }}
+          )}
+          <BombCounter
+            board={board.uncoveredBoard}
+            foundBombs={foundBombs}
+            setWin={setWin}
           />
-        )}
-        <BombCounter
-          board={board.uncoveredBoard}
-          foundBombs={foundBombs}
-          setWin={setWin}
-        />
-      </Box>
-    </div>
+        </Box>
+      </div>
+    </StyleRoot>
   );
 }
 
